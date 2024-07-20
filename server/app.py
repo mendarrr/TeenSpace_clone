@@ -192,19 +192,29 @@ class LeaveClub(Resource):
 api.add_resource(LeaveClub, '/clubs/<int:club_id>/leave')
 
 # List of events
-@app.route("/events", methods=["POST"])
+@app.route('/events', methods=['POST'])
 def create_event():
     data = request.get_json()
-    date_obj = datetime.strptime(data['date'], '%Y-%m-%d').date()
-    data['date'] = date_obj
+    print("Received data:", data)
+    name = data['name']
+    date_str = data['date']
+    club_id = data['club_id']  # Fix: access the club_id key with an underscore
 
-    new_event = Event(**data)
-    db.session.add(new_event)
+    # Convert date string to datetime object
+    date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+
+    # Get the club object from the database
+    club = Club.query.get(club_id)
+
+    if club is None:
+        return jsonify({'error': 'Club not found'}), 404
+
+    # Create a new event
+    event = Event(name=name, date=date_obj, club=club)
+    db.session.add(event)
     db.session.commit()
 
-    response = jsonify({'message': 'Event created successfully'})
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-    return response
+    return jsonify({'message': 'Event created successfully'}), 201
 
 #Deleting an Event by id
 @app.route('/events/<int:id>', methods=['DELETE'])
@@ -261,6 +271,16 @@ def delete_announcement(id):
     db.session.commit()
     return jsonify({'message': 'Announcement deleted successfully'}), 200
 
+# Updating an Announcement
+@app.route('/announcements/<int:id>', methods=['PATCH'])
+def update_announcement(id):
+    announcement = Announcement.query.get(id)
+    if not announcement:
+        return jsonify({'message': 'Announcement not found'}), 404
+    data = request.get_json()
+    announcement.content = data['content']
+    db.session.commit()
+    return jsonify({'message': 'Announcement updated successfully'}), 200
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
