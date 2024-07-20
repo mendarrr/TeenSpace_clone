@@ -52,15 +52,10 @@ api.add_resource(Index, '/')
 class Register(Resource):
     def post(self):
         data = request.get_json()
-        existing_user = User.query.filter_by(username=data['username']).first()
-        if existing_user:
-            return {'error': 'Username already exists'}, 400
-        existing_email = User.query.filter_by(email=data['email']).first()
-        if existing_email:
-            return {'error': 'Email address already exists'}, 400
         new_user = User(username=data['username'], password=data['password'], email=data['email'])
         db.session.add(new_user)
         db.session.commit()
+
         response = make_response(
             jsonify({"id": new_user.id, "username": new_user.username}),
             201
@@ -78,9 +73,9 @@ class Login(Resource):
         if not user or user.password != data['password']:
             return make_response({'message': 'Invalid credentials'}, 401)
 
-        access_token = create_access_token(identity=user.id)
+        session['user_id'] = user.id  # Set user ID in session
         response = {
-            'access_token': access_token,
+            'user_id': user.id,
             'user': user.to_dict()
         }
         return make_response(jsonify(response), 200)

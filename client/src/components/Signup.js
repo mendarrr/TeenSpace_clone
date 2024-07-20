@@ -49,12 +49,11 @@ function SignUp() {
         })
        .then(data => {
           console.log('Success:', data);
+          window.alert("Welcome to TeenSpace");
           navigate('/mainpage');
         })
        .catch(error => {
           console.error('Error:', error); 
-          window.alert("Welcome to TeenSpace");
-          navigate('/mainpage');
         });
     },
   });
