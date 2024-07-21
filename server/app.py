@@ -197,18 +197,13 @@ def create_event():
     print("Received data:", data)
     name = data['name']
     date_str = data['date']
-    club_id = data['club_id']  # Fix: access the club_id key with an underscore
+    club_id = data['club_id']
 
-    # Convert date string to datetime object
     date_obj = datetime.strptime(date_str, '%Y-%m-%d')
-
-    # Get the club object from the database
     club = Club.query.get(club_id)
 
     if club is None:
         return jsonify({'error': 'Club not found'}), 404
-
-    # Create a new event
     event = Event(name=name, date=date_obj, club=club)
     db.session.add(event)
     db.session.commit()
@@ -252,13 +247,19 @@ api.add_resource(ClubEvents, '/clubs/<int:club_id>/events')
 @app.route("/announcements", methods=["POST"])
 def create_announcement():
     data = request.get_json()
-    new_announcement = Announcement(content=data['content'], club_id=data['club_id'])
-    db.session.add(new_announcement)
+    print("Received data:", data)
+    content = data['content']
+    club_id = data['club_id']
+
+    club = Club.query.get(club_id)
+    if club is None:
+        return jsonify({'error': 'Club not found'}), 404
+    
+    announcement = Announcement(content=content, club=club)
+    db.session.add(announcement)
     db.session.commit()
 
-    response = jsonify({'message': 'Announcement created successfully'})
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-    return response
+    return jsonify({'message': 'Announcement created successfully'}), 201
 
 # Deleting an Announcement
 @app.route('/announcements/<int:id>', methods=['DELETE'])

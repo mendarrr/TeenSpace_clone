@@ -1,49 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './Login.css';
 
 function AddAnnouncement() {
+  // Set states
   const navigate = useNavigate();
+  const [clubs, setClubs] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/clubs', {
+      credentials: 'include' // Ensure credentials are included
+    })
+      .then(response => response.json())
+      .then(data => setClubs(data));
+  }, []);
+
+  // Define the Initial values
   const formik = useFormik({
     initialValues: {
       content: '',
       club: '',
     },
+
+    // Validate input fields using Yup
     validationSchema: Yup.object({
       content: Yup.string().required('Required'),
       club: Yup.string().required('Required'),
     }),
+
+    // Define the create announcement logic
     onSubmit: (values, { setSubmitting, setErrors }) => {
+      const selectedClub = clubs.find(club => club.name === values.club);
+      if (!selectedClub) {
+        setErrors({ club: 'Invalid club selection' });
+        return;
+      }
+      const clubId = selectedClub.id;
       fetch('http://127.0.0.1:5000/announcements', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'mode': 'no-cors',
         },
-        body: JSON.stringify(values),
+        credentials: 'include', // Ensure credentials are included
+        body: JSON.stringify({ ...values, club_id: clubId }),
       })
-      .then(response => {
-        setSubmitting(false);
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Failed to create event');
-        }
-      })
-      .then(data => {
-        console.log('Success:', data);
-        navigate('/mainpage');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setErrors({ submit: error.message });
-        window.alert("The announcement has been added to the TeenSpace Database")
-        // navigate('/mainpage');
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.message === 'Announcement created successfully') {
+            navigate('/mainpage');
+          } else {
+            alert('Error creating announcement');
+          }
+        })
+        .catch(error => {
+          console.error('Error creating announcement:', error);
+          alert('Error creating announcement');
+        });
     },
   });
+
   return (
     <div className="signup">
       <div className="btn btn-back">
@@ -70,19 +87,25 @@ function AddAnnouncement() {
             <div className="error">{formik.errors.content}</div>
           ) : null}
           <div className="form-group">
-            <input
+            <select
               id="club"
               name="club"
-              type="text"
-              placeholder="Club ID"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.club}
-            />
+            >
+              <option value="">Select a club</option>
+              {clubs.map(club => (
+                <option key={club.id} value={club.name}>
+                  {club.name}
+                </option>
+              ))}
+            </select>
           </div>
           {formik.touched.club && formik.errors.club ? (
             <div className="error">{formik.errors.club}</div>
           ) : null}
+
           <div className="btnn">
             <button type="submit" className="login-btn" disabled={formik.isSubmitting}>
               Add

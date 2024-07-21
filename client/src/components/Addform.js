@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import './Login.css';
 
 function CreateEvent() {
-  // Set states
   const navigate = useNavigate();
   const [clubs, setClubs] = useState([]);
 

@@ -243,11 +243,11 @@ function Clubprofile() {
           </div>
         </div>
 
-        <div>
+        <div className='join-leave-btn'>
           {isMember ? (
-            <button className='leave-btn' onClick={handleLeave}>Leave Club</button>
+            <button className='leave-btn' onClick={handleLeave}><span className='centered-text'>Leave Club</span></button>
           ) : (
-            <button className='join-btn' onClick={handleJoin}>Join Club</button>
+            <button className='join-btn' onClick={handleJoin}><span className='centered-text'>Join Club</span></button>
           )}
         </div>
       </div>
