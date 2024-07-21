@@ -11,7 +11,9 @@ function CreateEvent() {
   const [clubs, setClubs] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/clubs')
+    fetch('http://127.0.0.1:5000/clubs', {
+      credentials: 'include' // Ensure credentials are included
+    })
       .then(response => response.json())
       .then(data => setClubs(data));
   }, []);
@@ -45,6 +47,7 @@ function CreateEvent() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Ensure credentials are included
         body: JSON.stringify({ ...values, club_id: clubId }),
       })
       .then(response => {
@@ -57,14 +60,13 @@ function CreateEvent() {
       })
       .then(data => {
         console.log('Success:', data);
-        window.alert("The event has been added to the TeenSpace Database")
+        window.alert("The event has been added to the TeenSpace Database");
         navigate('/mainpage');
       })
       .catch(error => {
         console.error('Error:', error);
         setErrors({ submit: error.message });
-        window.alert("The event has been added to the TeenSpace Database")
-        navigate('/mainpage');
+        window.alert("Failed to create event");
       });
     },
   });

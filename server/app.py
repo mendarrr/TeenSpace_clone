@@ -161,8 +161,10 @@ api.add_resource(ClubByID, '/clubs/<int:club_id>')
 # User joining a club
 class JoinClub(Resource):
     def post(self, club_id):
-        data = request.get_json()
-        user = User.query.filter_by(username=data['username']).first()
+        user_id = session.get('user_id')
+        if not user_id:
+            return make_response({'message': 'User not authenticated'}, 401)
+        user = User.query.get(user_id)
         if not user:
             return make_response({'message': 'User not found'}, 404)
         club = Club.query.get_or_404(club_id)
@@ -170,13 +172,15 @@ class JoinClub(Resource):
         db.session.commit()
         return make_response({"message": "Joined club successfully"}, 200)
 
-api.add_resource(JoinClub, '/api/clubs/<int:club_id>')
+api.add_resource(JoinClub, '/clubs/<int:club_id>/join')
 
 # User leaving a club
 class LeaveClub(Resource):
     def post(self, club_id):
-        data = request.get_json()
-        user = User.query.filter_by(username=data['username']).first()
+        user_id = session.get('user_id')
+        if not user_id:
+            return make_response({'message': 'User not authenticated'}, 401)
+        user = User.query.get(user_id)
         if not user:
             return make_response({'message': 'User not found'}, 404)
         club = Club.query.get_or_404(club_id)

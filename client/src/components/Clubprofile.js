@@ -7,12 +7,15 @@ function Clubprofile() {
   const [club, setClub] = useState(null);
   const [events, setEvents] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [isMember, setIsMember] = useState(false);
   const api = "http://localhost:5000";
 
   useEffect(() => {
     const fetchClubData = async () => {
       try {
-        const clubResponse = await fetch(`${api}/clubs/${id}`);
+        const clubResponse = await fetch(`${api}/clubs/${id}`, {
+          credentials: 'include', // Include cookies in the request
+        });
         if (!clubResponse.ok) {
           throw new Error(`HTTP error! status: ${clubResponse.status}`);
         }
@@ -20,6 +23,18 @@ function Clubprofile() {
         setClub(clubData);
         setEvents(clubData.events);
         setNotifications(clubData.announcements);
+
+        // Check if the user is a member of the club
+        const userResponse = await fetch(`${api}/checksession`, {
+          credentials: 'include',
+        });
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          const isMember = userData.user.clubs.some(club => club.id === parseInt(id));
+          setIsMember(isMember);
+        } else {
+          setIsMember(false);
+        }
       } catch (error) {
         console.error('Error fetching club data:', error);
         setClub(null);
@@ -27,12 +42,53 @@ function Clubprofile() {
     };
 
     fetchClubData();
-  }, [id]);
+  }, [id, api]);
+
+  const handleJoin = async () => {
+    try {
+      const response = await fetch(`${api}/clubs/${id}/join`, {
+        method: 'POST',
+        credentials: 'include', // Include cookies in the request
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Joined club successfully:', data);
+      setIsMember(true); // Update state to reflect that the user is now a member
+    } catch (error) {
+      console.error('Error joining club:', error);
+    }
+  };
+
+  const handleLeave = async () => {
+    try {
+      const response = await fetch(`${api}/clubs/${id}/leave`, {
+        method: 'POST',
+        credentials: 'include', // Include cookies in the request
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Left club successfully:', data);
+      setIsMember(false); // Update state to reflect that the user is no longer a member
+    } catch (error) {
+      console.error('Error leaving club:', error);
+    }
+  };
 
   const handleDeleteEvent = async (eventId) => {
     try {
       const response = await fetch(`${api}/events/${eventId}`, {
         method: 'DELETE',
+        credentials: 'include', // Include cookies in the request
         headers: {
           'Content-Type': 'application/json',
         },
@@ -50,6 +106,7 @@ function Clubprofile() {
     try {
       const response = await fetch(`${api}/announcements/${notificationId}`, {
         method: 'DELETE',
+        credentials: 'include', // Include cookies in the request
         headers: {
           'Content-Type': 'application/json',
         },
@@ -64,21 +121,23 @@ function Clubprofile() {
   };
 
   const handleEditEvent = async (eventId) => {
-    // Prompt user for new event name and date
     const newEventName = prompt("Enter new event name:");
     const newEventDate = prompt("Enter new event date (in YYYY-MM-DD format):");
     const eventData = {};
     if (newEventName) eventData.name = newEventName;
     if (newEventDate) eventData.date = newEventDate;
     try {
-      const response = await fetch(`/events/${eventId}`, {
+      const response = await fetch(`${api}/events/${eventId}`, {
         method: 'PATCH',
+        credentials: 'include', // Include cookies in the request
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(eventData)
       });
-      
+
       if (response.ok) {
         console.log(`Event with id ${eventId} updated successfully!`);
+        // Update the state with the new event data
+        setEvents(events.map(event => event.id === eventId ? { ...event, ...eventData } : event));
       } else {
         console.error(`Error updating event: ${response.statusText}`);
       }
@@ -88,8 +147,26 @@ function Clubprofile() {
   };
 
   const handleEditNotification = async (notificationId) => {
-    // Implement edit notification logic here
-    console.log(`Editing notification with id ${notificationId}`);
+    const newNotificationContent = prompt("Enter new notification content:");
+    const notificationData = { content: newNotificationContent };
+    try {
+      const response = await fetch(`${api}/announcements/${notificationId}`, {
+        method: 'PATCH',
+        credentials: 'include', // Include cookies in the request
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(notificationData)
+      });
+
+      if (response.ok) {
+        console.log(`Notification with id ${notificationId} updated successfully!`);
+        // Update the state with the new notification data
+        setNotifications(notifications.map(notification => notification.id === notificationId ? { ...notification, ...notificationData } : notification));
+      } else {
+        console.error(`Error updating notification: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error(`Error updating notification: ${error}`);
+    }
   };
 
   if (!club) return <div>Loading...</div>;
@@ -164,6 +241,14 @@ function Clubprofile() {
               ))}
             </ul>
           </div>
+        </div>
+
+        <div>
+          {isMember ? (
+            <button className='leave-btn' onClick={handleLeave}>Leave Club</button>
+          ) : (
+            <button className='join-btn' onClick={handleJoin}>Join Club</button>
+          )}
         </div>
       </div>
     </div>
