@@ -16,7 +16,7 @@ function MainPage() {
   }, [clubs]);
 
   const fetchClubs = () => {
-    fetch("http://localhost:5000/clubs")
+    fetch("/clubs")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
