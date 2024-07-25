@@ -9,18 +9,68 @@
     text-decoration: none;
 }
 
-.login,
-.signup,
-.addform
-{
-    width: 100%;
-    height: 100vh;
-    background-image: url('../assets/loginn.png');
-    background-size: cover;
-    display: flex;
-    flex-direction: row;
-    padding: 20px; 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
+
+.login, .signup, .addform {
+    min-height: 101.1vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.starter {
+    margin: 0;
+}
+
+
+.login, .signup, .addform {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/loginn.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.btnn {
+    background: linear-gradient(45deg, #fd9400, #ff5e00);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.btnn:hover {
+    transform: scale(1.05);
+}
+
+
+.starter {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-group input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 
 .form-container{
     width: 700px;
@@ -184,9 +234,9 @@
 .login-btn{
     background: transparent;
     text-align: center;
-    margin-left: 125px;
+    margin-left: 105px;
     color: wheat;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 600;
     cursor: pointer;
     transition: all.3s ease-in-out;
@@ -263,6 +313,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 25px;
 }
 
+.main-content {
+    transition: filter 0.3s ease-in-out;
+}
+
+.blurred {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -274,14 +333,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     justify-content: center;
     align-items: center;
     padding: 20px;
+    z-index: 1000;
   }
   
   .modal-content {
+    width: 500px;
+    margin-left: 1800px;
     padding: 20px;
-    background-color: #663d21;
+    background-color: #a56439;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-content .btns{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
   }
 
   .modal-content h1{
@@ -291,10 +359,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-bottom: 30px;
     color: rgb(252, 228, 183);
   }
+
+  .modal-content button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    transition: all.3s ease-in-out;
+    background: radial-gradient(circle at center, #462a02, #2b1901, #0d0804);
+    color: rgb(252, 228, 183);
+    cursor: pointer;
+    text-align: center;
+  }
   
   .modal-content button,
   .modal-content .logout {
-    margin-left: 140px;
+    margin-left: 370px;
     width: 100px;
     font-size: 20px;
     padding: 10px 20px;
@@ -325,6 +408,317 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-family: 'Times New Roman', Times, serif;
     color: rgb(252, 228, 183);
     margin-left: 16px;
+}
+
+@media (max-width: 768px) {
+    .starter {
+        width: 90%;
+        margin: 20px auto;
+    }
+}
+
+@media (max-width: 1200px) {
+    .starter {
+        margin-left: 100px;
+    }
+    .form-container {
+        width: 600px;
+    }
+    .starter h1 {
+        font-size: 40px;
+    }
+    .starter h2 {
+        font-size: 45px;
+    }
+    .starter h3 {
+        font-size: 22px;
+    }
+    .starter p {
+        font-size: 13px;
+    }
+    .btn-back {
+        font-size: 35px;
+    }
+    .btn-back .fa-arrow-left-long {
+        font-size: 25px;
+    }
+    .form-group input {
+        font-size: 18px;
+    }
+    .form-group input::placeholder {
+        font-size: 18px;
+    }
+    .btnn {
+        width: 300px;
+        margin-left: 100px;
+    }
+    .login-btn, .add-btn {
+        font-size: 18px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 80px;
+        font-size: 18px;
+    }
+    .modal-content .centered-text {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 992px) {
+    .login, .signup, .addform {
+        flex-direction: column;
+        align-items: center;
+    }
+    .starter {
+        margin-left: 0;
+        height: auto;
+        width: 90%;
+        padding: 20px;
+    }
+    .form-container {
+        width: 100%;
+        margin-right: 0;
+    }
+    .btn-back {
+        font-size: 30px;
+    }
+    .form-group input {
+        font-size: 16px;
+    }
+    .form-group input::placeholder {
+        font-size: 16px;
+    }
+    .btnn {
+        width: 250px;
+        margin-left: 0;
+    }
+    .login-btn, .add-btn {
+        font-size: 16px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 70px;
+        font-size: 16px;
+    }
+    .modal-content .centered-text {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .starter {
+        padding: 10px;
+    }
+    .starter h1 {
+        font-size: 30px;
+    }
+    .starter h2 {
+        font-size: 35px;
+    }
+    .starter h3 {
+        font-size: 18px;
+    }
+    .starter p {
+        font-size: 12px;
+    }
+    .btn-back {
+        font-size: 25px;
+        margin-top: 300px;
+    }
+    .form-group input {
+        font-size: 14px;
+    }
+    .form-group input::placeholder {
+        font-size: 14px;
+    }
+    .btnn {
+        width: 200px;
+    }
+    .login-btn, .add-btn {
+        font-size: 14px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 60px;
+        font-size: 14px;
+    }
+    .modal-content .centered-text {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .starter h1 {
+        font-size: 25px;
+    }
+    .starter h2 {
+        font-size: 30px;
+    }
+    .starter h3 {
+        font-size: 16px;
+    }
+    .starter p {
+        font-size: 10px;
+    }
+    .btn-back {
+        font-size: 20px;
+        margin-top: 200px;
+    }
+    .form-group input {
+        font-size: 12px;
+    }
+    .form-group input::placeholder {
+        font-size: 12px;
+    }
+    .btnn {
+        width: 150px;
+    }
+    .login-btn, .add-btn {
+        font-size: 12px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 50px;
+        font-size: 12px;
+    }
+    .modal-content .centered-text {
+        font-size: 12px;
+    }
+}
+
+@media (max-height: 992px) {
+    .starter {
+        height: auto;
+        min-height: 84.3vh;
+    }
+    .btn-back{
+        margin-top: 10px;
+    }
+    .login, .signup, .addform {
+        height: auto;
+        margin-top: -10px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 80px;
+        font-size: 18px;
+    }
+    .modal-content .centered-text {
+        font-size: 18px;
+    }
+    .btnn {
+        width: 300px;
+        margin-left: 100px;
+        height: 40px;
+        outline: none;
+        background: transparent;
+    }
+    .btnn:hover {
+        background: transparent;
+    }
+
+    .signup .login-btn{
+        font-size: 18px;
+        margin-left: 70px;
+        margin-bottom: 40px;
+        width: 180px;
+    }
+
+    .login .login-btn{
+        margin-left: 180px;
+    }
+}
+
+@media (max-height: 600px) {
+    .starter {
+        height: auto;
+        min-height: 70vh;
+    }
+    .login, .signup, .addform {
+        height: auto;
+    }
+}
+
+@media (max-height: 500px) {
+    .starter {
+        height: auto;
+        min-height: 60vh;
+    }
+    .login, .signup, .addform {
+        height: auto;
+    }
+}
+
+@media (max-height: 400px) {
+    .starter {
+        height: auto;
+        min-height: 50vh;
+    }
+    .login, .signup, .addform {
+        height: auto;
+    }
+}
+
+.btnn, .login-btn, .add-btn, .modal-content button, .modal-content .logout {
+    transition: all.3s ease-in-out;
+}
+
+@media (max-width: 1200px) {
+    .btnn {
+        width: 300px;
+        margin-left: 100px;
+        font-size: 18px;
+    }
+    .login-btn, .add-btn {
+        font-size: 18px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 80px;
+        font-size: 18px;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .btnn {
+        width: 250px;
+        margin-left: 0;
+        font-size: 16px;
+    }
+    .login-btn, .add-btn {
+        font-size: 16px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 70px;
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .btnn {
+        width: 200px;
+        font-size: 14px;
+    }
+    .login-btn, .add-btn {
+        font-size: 14px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 60px;
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .btnn {
+        width: 150px;
+        font-size: 12px;
+    }
+    .login-btn, .add-btn {
+        font-size: 12px;
+    }
+    .modal-content button, .modal-content .logout {
+        width: 50px;
+        font-size: 12px;
+        padding: 5px 8px;
+    }
 }
 
 

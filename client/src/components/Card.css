@@ -1,37 +1,61 @@
-.club-card{
-    width: 550px;
+.club-card {
+    width: 520px;
+    height: 290px;
+    margin-left: 20px;
     margin-bottom: 20px;
-    padding: 25px;
-    border: 1px solid black;
     border-radius: 15px;
+    border: 1px solid#6E2714;
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(30px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.club-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    border-top: 5px solid #ffc355;
+    border-left: none;
+    border-right: 5px solid #ffc355;
+    border-bottom: none;
+}
+
+.club-card h3 {
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-    transition: all.3s ease-in-out;
-}
-
-.club-card:hover{
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-    background: radial-gradient(circle at center, #462a02, #2b1901, #0d0804);
-    border: none;
-}
-
-.club-card h3{
+    margin-top: 170px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     font-size: 30px;
-    font-family: 'Times New Roman', Times, serif;
-    text-align: center;
+    letter-spacing: 1px;
+    font-family: 'Arial', sans-serif;
     color: #ffc355;
-    border-bottom: 10px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+    cursor: pointer;
 }
 
-.club-card h3:hover{
+.club-card h3:hover {
     color: #ff7b00;
-    border-bottom: 1px solid brown;
+    text-shadow: 0 0 10px rgba(255, 123, 0, 0.5);
 }
 
-.club-card p{
-    font-size: 17px;
+.club-card p {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    font-size: 16px;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
     text-align: center;
-    color: hsl(0, 0%, 98%);
-    border-top: 10px;
+}
+
+.club-card:hover p {
+    top: 60px;
 }
