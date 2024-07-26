@@ -12,6 +12,7 @@ from models import db, User, Club, Event, Announcement, user_club
 app = Flask(__name__)
 
 # Configure CORS
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
 app.secret_key = secrets.token_urlsafe(16)
