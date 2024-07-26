@@ -7,7 +7,7 @@
     flex-direction: wrap;
     padding: 25px;
     height: auto;
-    background: url(../assets/back.png);
+    background: linear-gradient(to bottom right, #f6d365, #fda085);
     background-size: cover;
 }
 
@@ -15,11 +15,28 @@
     margin-left: 200px;
     padding: 35px;
     width: 900px;
-    background: transparent;
-    border: 0.2px solid black;
     border-radius: 50px;
-    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
+.club-events ul li,
+.club-notifications ul li {
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 8px;
+    color: #462a02;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.club-events ul li:hover,
+.club-notifications ul li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
 
 .club-details{
     align-items: center;
@@ -32,12 +49,18 @@
 }
 
 .club-details h1{
+    text-shadow: 5px 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: "Dancing Script", cursive;
     font-size: 70px;
     font-weight: 700;
     letter-spacing: 3px;
-    color: rgb(255, 179, 79);
+    color: rgb(100, 57, 0);
+}
+
+.club-events h2,
+.club-notifications h2 {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .club-details p{
@@ -46,14 +69,14 @@
     font-size: 18px;
     font-weight: 400;
     letter-spacing: 1px;
-    color: rgb(253, 239, 225);
+    color: rgb(0, 100, 100);
 }
 
-.fa-arrow-left-long{
+.club-details .fa-arrow-left-long{
     margin-top: 50px;
     margin-left: 270px;
     font-size: 45px;
-    color: rgb(255, 179, 79);
+    color: rgb(15, 9, 0);
 }
 
 .club-events,
@@ -112,9 +135,11 @@
     transition: all.3s ease-in-out;
 }
 
+
+
 .centered-text{
   text-align: center;
-  margin-left: 23px;
+  margin-left: 8px;
   justify-content: center;
   font-size: 20px;
   font-weight: 600;
@@ -172,21 +197,24 @@
     display: flex;
     align-items: center;
     padding: 1px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
   .toolbox button {
-    background-color: transparent;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .toolbox button:hover {
-    background-color: #eee;
-  }
+    margin-left: 8px;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbox button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
   
   .delete-btn {
     color: #eb2401;
